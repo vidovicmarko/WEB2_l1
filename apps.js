@@ -16,17 +16,20 @@ const pool = new Pool({
     }
 });
 
-const config = {
-    authRequired: false,
-    auth0Logout: true,
-    secret: process.env.SECRET,
-    baseURL: process.env.BASE_URL || 'https://web2-l1.onrender.com',
-    clientID: process.env.CLIENT_ID,
-    issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`,
-    authorizationParams: {
-        response_type: 'code',
-        scope: 'openid profile email',
-        redirect_uri: 'https://web2-l1.onrender.com/callback'
+const authenticate = async (req, res, next) => {
+    try {
+        const response = await axios.post(`https://${process.env.AUTH0_DOMAIN}/oauth/token`, {
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET,
+            audience: process.env.AUDIENCE,
+            grant_type: 'client_credentials'
+        });
+
+        req.token = response.data.access_token;
+        next();
+    } catch (error) {
+        console.error('Greška pri dobivanju access tokena:', error);
+        res.status(500).json({ error: 'Greška pri dobivanju tokena' });
     }
 };
 
