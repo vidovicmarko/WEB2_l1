@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="utf-8">
+    <title>Ulaznice</title>
+    <style>
+        body {
+            background-color: rgb(241, 241, 241);
+            color: black; 
+            font-family: Arial, sans-serif; 
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+
+        #user-name {
+            display: none; 
+            text-align: center; 
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px; 
+        }
+
+        #login-button, #logout-button {
+            width: 300px; 
+            margin: 10px auto;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        #login-button:hover, #logout-button:hover {
+            background-color: #555;
+        }
+
+        form {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        form input, form button {
+            width: 100%; 
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        form button {
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #555;
+        }
+
+        #qr-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #qr-container h2 {
+            margin: 0;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const response = await fetch('/api/user'); 
+            const user = await response.json();
+
+            if (user && user.name) {
+                document.getElementById('user-name').innerText = `Prijavljeni korisnik: ${user.name}`;
+                document.getElementById('user-name').style.display = 'block';
+                document.getElementById('logout-button').style.display = 'block';
+            } else {
+                document.getElementById('login-button').style.display = 'block';
+            }
+
+            const ticketCountResponse = await fetch('/api/tickets/count');
+            if (ticketCountResponse.ok) {
+                const ticketCountData = await ticketCountResponse.json();
+                document.getElementById('ticket-count').innerText = ticketCountData.count;
+            }
+        });
+
+        async function createTicket(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+
+            const response = await fetch('/api/tickets', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                document.getElementById('qr-code').src = result.qrCode;
+                document.getElementById('qr-container').style.display = 'block';
+                document.getElementById('message').innerText = result.message;
+            } else {
+                const error = await response.json();
+                document.getElementById('message').innerText = error.error;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Kreiranje ulaznica</h1>
+    <div id="user-name" style="display: none;"></div>
+    <button id="login-button" onclick="window.location.href='/login'" style="display: none;">Prijava</button>
+    <button id="logout-button" onclick="window.location.href='/logout'" style="display: none;">Odjava</button>
+
+    <p>Ukupan broj kreiranih ulaznica: <b id="ticket-count">0</b></p>
+
+    <form onsubmit="createTicket(event)">
+        <input type="text" name="vatin" placeholder="OIB" required>
+        <input type="text" name="firstname" placeholder="Ime" required>
+        <input type="text" name="lastname" placeholder="Prezime" required>
+        <button type="submit">Kreiraj ulaznicu</button>
+    </form>
+
+    <div id="qr-container" style="display: none;">
+        <h2>QR Kod:</h2>
+        <img id="qr-code" src="" alt="QR Kod">
+    </div>
+
+    <div id="message"></div>
+</body>
+</html>

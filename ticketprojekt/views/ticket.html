@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="utf-8">
+    <title>Ulaznica</title>
+    <style>
+        body {
+            background-color: rgb(241, 241, 241);
+            color: black;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #user-name {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        h1, h2 {
+            margin: 5px;
+        }
+
+        #error-message {
+            color: red;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.1em;
+            margin: 5px 0;
+            text-align: center;
+        }
+
+        button {
+            width: 300px;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+    </style>
+    <script>
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+            const options = { 
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                hour12: false, 
+                timeZone: 'Europe/Zagreb'
+            };
+            return date.toLocaleString('hr-HR', options).replace(',', '');
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const ticketId = window.location.pathname.split('/').pop();
+
+            if (!ticketId) {
+                document.getElementById('error-message').innerText = 'ID ulaznice nije naveden.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/ticket/${ticketId}`);
+                if (!response.ok) throw new Error('Greška prilikom učitavanja ulaznice.');
+
+                const ticket = await response.json();
+                const userResponse = await fetch('/api/user');
+                const user = await userResponse.json();
+
+                document.getElementById('user-name').innerText = `Prijavljeni korisnik: ${user.name}`;
+                document.getElementById('vatin').innerText = ticket.vatin;
+                document.getElementById('firstName').innerText = ticket.firstname;
+                document.getElementById('lastName').innerText = ticket.lastname;
+                document.getElementById('created_at').innerText = formatDateTime(ticket.created_at);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('error-message').innerText = 'Greška prilikom učitavanja ulaznice.';
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Podaci o ulaznici</h1>
+    <p id="error-message"></p>
+    <h2 id="user-name"></h2>
+    
+    <p><b>OIB:</b> <span id="vatin"></span></p>
+    <p><b>Ime:</b> <span id="firstName"></span></p>
+    <p><b>Prezime:</b> <span id="lastName"></span></p>
+    <p><b>Vrijeme nastanka:</b> <span id="created_at"></span></p>
+    
+    <button onclick="window.location.href='/'">Nazad na početnu stranicu</button>
+</body>
+</html>
