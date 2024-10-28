@@ -16,6 +16,14 @@ const pool = new Pool({
     }
 });
 
+app.get('/api/user', auth(), (req, res) => {
+    if (req.oidc.user) {
+      res.json(req.oidc.user);
+    } else {
+      res.status(401).json({ message: 'Niste prijavljeni.' });
+    }
+  });
+
 const authenticate = async (req, res, next) => {
     try {
         const response = await axios.post(`https://${process.env.AUTH0_DOMAIN}/oauth/token`, {
