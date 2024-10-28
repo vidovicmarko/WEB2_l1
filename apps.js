@@ -20,12 +20,13 @@ const config = {
     authRequired: false,
     auth0Logout: true,
     secret: process.env.SECRET,
-    baseURL: process.env.BASE_URL || 'http://localhost:3000',
+    baseURL: process.env.BASE_URL || 'https://web2-l1.onrender.com',
     clientID: process.env.CLIENT_ID,
     issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`,
     authorizationParams: {
         response_type: 'code',
-        scope: 'openid profile email'
+        scope: 'openid profile email',
+        redirect_uri: 'https://web2-l1.onrender.com/callback'
     }
 };
 
