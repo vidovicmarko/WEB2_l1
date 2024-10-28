@@ -8,13 +8,13 @@ require('dotenv').config();
 const { auth } = require('express-openid-connect');
 
 const config = {
-  authRequired: false, 
-  auth0Logout: true,
-  secret: process.env.SECRET,
-  baseURL: process.env.BASE_URL,
-  clientID: process.env.CLIENT_ID,
-  issuerBaseURL: 'https://dev-t1lg5mupekaecrjv.us.auth0.com'
-};
+    authRequired: false,
+    auth0Logout: true,
+    secret: process.env.SECRET,
+    baseURL: process.env.BASE_URL,
+    clientID: process.env.CLIENT_ID,
+    issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`
+  };
 
 const pool = new Pool({
   user: process.env.DB_USER,
