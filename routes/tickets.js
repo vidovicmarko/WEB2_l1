@@ -18,8 +18,8 @@ const pool = new Pool({
 });
 
 const requireAuth = (req, res, next) => {
-    if (!req.oidc.isAuthenticated()) {
-        return res.status(401).json({ error: 'Korisnik nije prijavljen.' });
+    if (!req.token) {
+        return res.status(401).json({ error: 'Nema pristupa, token nije prisutan.' });
     }
     next();
 };

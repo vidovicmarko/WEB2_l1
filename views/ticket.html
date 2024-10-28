@@ -82,7 +82,13 @@
 
                 const ticket = await response.json();
                 const userResponse = await fetch('/api/user');
-                const user = await userResponse.json();
+                const user = req.oidc.user;
+
+                if (user) {
+                    document.getElementById('user-name').innerText = `Prijavljeni korisnik: ${user.name}`;
+                } else {
+                    document.getElementById('user-name').innerText = 'Niste prijavljeni.'; // Ili neku drugu poruku
+                }
 
                 document.getElementById('user-name').innerText = `Prijavljeni korisnik: ${user.name}`;
                 document.getElementById('vatin').innerText = ticket.vatin;

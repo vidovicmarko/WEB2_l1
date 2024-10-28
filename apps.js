@@ -37,7 +37,7 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(authenticate);
+app.use('/api/tickets', authenticate, ticketRoutes); 
 
 app.get('/', async (req, res) => {
     try {
