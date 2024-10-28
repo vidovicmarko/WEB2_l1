@@ -16,13 +16,6 @@ const pool = new Pool({
     }
 });
 
-app.get('/api/user', auth(), (req, res) => {
-    if (req.oidc.user) {
-      res.json(req.oidc.user);
-    } else {
-      res.status(401).json({ message: 'Niste prijavljeni.' });
-    }
-  });
 
 const authenticate = async (req, res, next) => {
     try {
@@ -46,6 +39,14 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/tickets', authenticate, ticketRoutes); 
+
+app.get('/api/user', auth(), (req, res) => {
+    if (req.oidc.user) {
+      res.json(req.oidc.user);
+    } else {
+      res.status(401).json({ message: 'Niste prijavljeni.' });
+    }
+  });
 
 app.get('/', async (req, res) => {
     try {
