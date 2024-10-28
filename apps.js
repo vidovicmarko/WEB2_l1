@@ -4,6 +4,7 @@ const ticketRoutes = require('./routes/tickets');
 const axios = require('axios');
 const { Pool } = require('pg');
 require('dotenv').config();
+const { auth } = require('express-openid-connect');
 
 const pool = new Pool({
     user: process.env.DB_USER,
