@@ -14,7 +14,6 @@ const config = {
   baseURL: process.env.BASE_URL,
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: 'https://dev-t1lg5mupekaecrjv.us.auth0.com'
-  
 };
 
 const pool = new Pool({
@@ -72,7 +71,7 @@ app.get('/', async (req, res) => {
 
 app.use('/api/tickets', authenticate, ticketRoutes);
 
-app.get('/ticket/:id', auth(), async (req, res) => {
+app.get('/ticket/:id', auth(), (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'ticket.html'));
 });
 
