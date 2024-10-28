@@ -82,9 +82,9 @@
             if (user && user.name) {
                 document.getElementById('user-name').innerText = `Prijavljeni korisnik: ${user.name}`;
                 document.getElementById('user-name').style.display = 'block';
-                document.getElementById('logout-button').style.display = 'block';
+                document.getElementById('logout-button').style.display = 'block'; 
             } else {
-                document.getElementById('login-button').style.display = 'block';
+                document.getElementById('login-button').style.display = 'block';   
             }
 
             const ticketCountResponse = await fetch('/api/tickets/count');
