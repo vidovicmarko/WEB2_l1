@@ -8,7 +8,7 @@ require('dotenv').config();
 const { auth } = require('express-openid-connect');
 
 const config = {
-    issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
+    issuerBaseURL: 'https://dev-t1lg5mupekaecrjv.us.auth0.com/',
     authRequired: false,
     auth0Logout: true,
     secret: process.env.SECRET,
