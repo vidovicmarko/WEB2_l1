@@ -8,12 +8,12 @@ require('dotenv').config();
 const { auth } = require('express-openid-connect');
 
 const config = {
+    issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
     authRequired: false,
     auth0Logout: true,
     secret: process.env.SECRET,
     baseURL: 'https://web2-l1.onrender.com',
-    issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
-    clientID: 'Qm7vsI6sXbrdFJeNcTxWhk0rTvoKzM9W',
+    clientID: 'Qm7vsI6sXbrdFJeNcTxWhk0rTvoKzM9W'
   };
 
 const pool = new Pool({
