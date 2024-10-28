@@ -10,9 +10,9 @@ const { auth } = require('express-openid-connect');
 const config = {
     authRequired: false,
     auth0Logout: true,
-    secret: process.env.SECRET,
-    baseURL: process.env.BASE_URL,
-    clientID: process.env.CLIENT_ID,
+    secret: 's$6D@K3m!5l9q#9xP2T&rJ7W@z$L1',
+    baseURL: 'https://web2-l1.onrender.com',
+    clientID: 'Qm7vsI6sXbrdFJeNcTxWhk0rTvoKzM9W',
     issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`
   };
 
