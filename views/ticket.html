@@ -81,7 +81,6 @@
                 if (!response.ok) throw new Error('Greška prilikom učitavanja ulaznice.');
 
                 const ticket = await response.json();
-                const userResponse = await fetch('/api/user');
                 const user = req.oidc.user;
 
                 if (user) {

@@ -76,23 +76,27 @@
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            const response = await fetch('/api/user'); 
+    try {
+        const response = await fetch('/api/user');
+
+        if (response.ok) {
             const user = await response.json();
+            document.getElementById('user-name').innerText = `Prijavljeni korisnik: ${user.name}`;
+            document.getElementById('user-name').style.display = 'block';
+            document.getElementById('logout-button').style.display = 'block';
+        } else {
+            document.getElementById('login-button').style.display = 'block';
+        }
+        } catch (error) {
+        console.error("Greška prilikom dohvaćanja podataka o korisniku:", error);
+        }
 
-            if (user && user.name) {
-                document.getElementById('user-name').innerText = `Prijavljeni korisnik: ${user.name}`;
-                document.getElementById('user-name').style.display = 'block';
-                document.getElementById('logout-button').style.display = 'block'; 
-            } else {
-                document.getElementById('login-button').style.display = 'block';   
-            }
-
-            const ticketCountResponse = await fetch('/api/tickets/count');
-            if (ticketCountResponse.ok) {
-                const ticketCountData = await ticketCountResponse.json();
-                document.getElementById('ticket-count').innerText = ticketCountData.count;
-            }
-        });
+    const ticketCountResponse = await fetch('/api/tickets/count');
+    if (ticketCountResponse.ok) {
+        const ticketCountData = await ticketCountResponse.json();
+        document.getElementById('ticket-count').innerText = ticketCountData.count;
+    }
+});
 
         async function createTicket(event) {
             event.preventDefault();
