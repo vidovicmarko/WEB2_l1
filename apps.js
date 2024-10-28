@@ -12,8 +12,8 @@ const config = {
     auth0Logout: true,
     secret: process.env.SECRET,
     baseURL: 'https://web2-l1.onrender.com',
+    issuerBaseURL: 'https://${process.env.AUTH0_DOMAIN}',
     clientID: 'Qm7vsI6sXbrdFJeNcTxWhk0rTvoKzM9W',
-    issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`
   };
 
 const pool = new Pool({
