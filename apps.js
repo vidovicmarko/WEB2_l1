@@ -14,7 +14,7 @@ const config = {
   baseURL: process.env.BASE_URL,
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: 'https://dev-t1lg5mupekaecrjv.us.auth0.com'
-  }
+  
 };
 
 const pool = new Pool({
