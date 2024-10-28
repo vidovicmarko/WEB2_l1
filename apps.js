@@ -12,7 +12,7 @@ const config = {
     auth0Logout: true,
     secret: process.env.SECRET,
     baseURL: 'https://web2-l1.onrender.com',
-    issuerBaseURL:'https://dev-t1lg5mupekaecrjv.us.auth0.com',
+    issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
     clientID: 'Qm7vsI6sXbrdFJeNcTxWhk0rTvoKzM9W',
   };
 
